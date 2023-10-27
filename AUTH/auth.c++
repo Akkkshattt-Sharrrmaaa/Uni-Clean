@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<fstream>
 using namespace std;
 
 class User{
@@ -33,11 +34,36 @@ void handlingSignIn(){
         cout<<endl<<"Incorrect Id or Password , Please try again "<<endl;
         main();
     }
-    
+
+}
+
+void saveUserToFile(User& user){
+    std::ofstream file("users.txt", std::ios::app);
+    if (file.is_open()) {
+        file << user.username << " " << user.password << std::endl;
+        file.close();
+        cout<<endl<<"Sign Up Successful , you can Sign In now"<<endl;
+        main();
+    }else{
+        cout<<endl<<"User creation failed , please try again"<<endl;
+        main();
+    }
+
 }
 
 auto handlingSignUp(){
 
+    string username , password;
+
+    cout<<"Enter the username and password you wish to set"<<endl;
+    cout<<"username : ";
+    cin>>username;
+    cout<<"username : ";
+    cin>>password;
+
+    User user(username , password);
+
+    saveUserToFile(user);
 
 }
 
@@ -54,11 +80,13 @@ int main(){
     cin>> choice;
 
     if(choice == 1){
-        //handle sign in
+
         handlingSignIn();
+        
     }else if(choice == 2){
-        //handle sign up
+
         handlingSignUp();
+
     }else if(choice == 3){
         return 0;
     }else{
