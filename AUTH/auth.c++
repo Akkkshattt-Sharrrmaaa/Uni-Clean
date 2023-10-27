@@ -14,7 +14,40 @@ class User{
         }
 };
 
+void appStartup();
+
 bool authenticateUser(string& username , string& password){
+
+    ifstream file("users.txt");
+    if(file.is_open()){
+        string line;
+        while(getline(file, line)){
+            size_t spacePos = line.find(' ');
+            if(spacePos != string::npos){
+                string fileUsername = line.substr(0, spacePos);
+                string filePassword = line.substr(spacePos + 1);
+
+                if(fileUsername == username && filePassword == password){
+                    return true;
+                }
+            }
+        }file.close();
+    }
+    return false;
+}
+
+
+void saveUserToFile(User* user){
+    std::ofstream file("users.txt", std::ios::app);
+    if (file.is_open()) {
+        file << user->username << " " << user->password << std::endl;
+        file.close();
+        cout<<endl<<"Sign Up Successful , you can Sign In now"<<endl;
+        return appStartup();
+    }else{
+        cout<<endl<<"User creation failed , please try again"<<endl;
+        return appStartup();
+    }
 
 }
 
@@ -29,29 +62,17 @@ void handlingSignIn(){
     cin>>password;
 
     if(authenticateUser(username , password)){
-
+        cout<<"Sign In Successful "<<endl;
+        cout<<" Welcome Back "<<username<<endl<<endl;
     }else{
         cout<<endl<<"Incorrect Id or Password , Please try again "<<endl;
-        main();
+        return appStartup();
     }
 
 }
 
-void saveUserToFile(User& user){
-    std::ofstream file("users.txt", std::ios::app);
-    if (file.is_open()) {
-        file << user.username << " " << user.password << std::endl;
-        file.close();
-        cout<<endl<<"Sign Up Successful , you can Sign In now"<<endl;
-        main();
-    }else{
-        cout<<endl<<"User creation failed , please try again"<<endl;
-        main();
-    }
 
-}
-
-auto handlingSignUp(){
+void handlingSignUp(){
 
     string username , password;
 
@@ -61,13 +82,13 @@ auto handlingSignUp(){
     cout<<"username : ";
     cin>>password;
 
-    User user(username , password);
+    User *user = new User(username , password);
 
     saveUserToFile(user);
 
 }
 
-int main(){
+void appStartup(){
 
     cout<<endl<<"----- Welcome to UniClean -----"<<endl<<endl;
     cout<<"1. Sign In"<<endl;
@@ -88,11 +109,17 @@ int main(){
         handlingSignUp();
 
     }else if(choice == 3){
-        return 0;
+        return;
     }else{
         cout<<endl<<endl<<"----Invalid choice , please choose again ----"<<endl;
-        main();
+        return appStartup();
     }
+
+}
+
+int main(){
+
+    appStartup();
 
 return 0;
 }
