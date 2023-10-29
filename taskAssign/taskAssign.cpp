@@ -9,6 +9,7 @@ using namespace std;
 int getStaffId() {
     // fetches the staff id with the least number of jobs
     // -- RONIT --
+    return 0;
 }
 
 void assign(ofstream& tempfile, int id, string name, string compLoc, string time, string status, int staffId) {
