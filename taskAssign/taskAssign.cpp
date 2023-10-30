@@ -57,6 +57,8 @@ int main() {
 
     // reading from userComplaint file
     read();
+    std::remove("userComplaint.txt");
+    std::rename("temp.txt", "userComplaint.txt");
 
     // delete the userComplaint file
     // change the name of temp file to user complaint file;
