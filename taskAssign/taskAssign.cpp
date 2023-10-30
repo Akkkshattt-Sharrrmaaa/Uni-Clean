@@ -6,10 +6,53 @@ using namespace std;
 
 // void renameTempFile() {}
 
+
+class Staff {
+    public:
+        int id;
+        string name;
+        int jobs;
+        bool ongoing;
+        
+};
+bool compareByJobs(const Staff& a, const Staff& b) {
+            return a.jobs < b.jobs;
+};
+
+
 int getStaffId() {
-    // fetches the staff id with the least number of jobs
-    // -- RONIT --
-    return 0;
+    
+    ifstream staffDetails("staffDetails.txt");
+    
+    if (!staffDetails.is_open()) {
+        cout << "Error -> Cannot open the file" << endl;
+        return 0;
+    }
+    string name;
+    int id, jobs;
+
+    vector<int> staffIds;
+    vector<int> staffJobs;
+
+    while (!staffDetails.eof()) {
+        staffDetails >> id >> name >> jobs;
+        staffIds.push_back(id);
+        staffJobs.push_back(jobs);
+    }
+    
+    vector<Staff> staffs;
+
+    for (int i = 0; i < staffIds.size(); i++) {
+        Staff staff;
+        staff.id = staffIds[i];
+        staff.jobs = staffJobs[i];
+        staffs.push_back(staff);
+    }
+    
+    sort(staffs.begin(), staffs.end(), compareByJobs);
+
+    int staffId = staffs[0].id;
+    return staffId;
 }
 
 void assign(ofstream& tempfile, int id, string name, string compLoc, string time, string status, int staffId) {
@@ -70,4 +113,3 @@ int main() {
 // take the data from staffDetails file where the location of service of staff matches the complain location
 // sort the staff on the basis of number of jobs.
 // assign the staff to task by updating the staffAssigned & status column
-
