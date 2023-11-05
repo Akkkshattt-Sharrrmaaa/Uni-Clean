@@ -12,9 +12,9 @@ public:
     Task(string title, string description, string location) : title(title), description(description), location(location) {}
 };
 
-void taskUpload();
+void Taskupload();
 
-bool checkForTaskDuplicacy(string& title, string& description, string& location) {
+bool authenticateTask(string& title, string& description, string& location) {
     ifstream file("task.txt");
     if (file.is_open()) {
         string line;
@@ -46,11 +46,11 @@ void saveTasktofile(Task* task) {
         file << task->title << " " << task->description << " " << task->location << endl;
         file.close();
         cout << "Task uploaded successfully, you can exit now" << endl;
-        taskUpload();
+        Taskupload();
     }
     else {
         cout << "Task upload failed, please try again" << endl;
-        taskUpload();
+        Taskupload();
     }
 }
 
@@ -61,14 +61,14 @@ void handlingfillIn() {
 
     cout << endl << "--- Enter title, description, and location ---" << endl;
     cout << "Title: ";
-    cin >> title;
+    cin.ignore(); // Use cin.ignore() to clear the newline character from the buffer
+    getline(cin, title); // Allow multi-word title input
     cout << "Description: ";
-    cin.ignore(); 
     getline(cin, description);
     cout << "Location: ";
     getline(cin, location);
 
-    if (checkForTaskDuplicacy(title, description, location)) {
+    if (authenticateTask(title, description, location)) {
         cout << "Task already exists." << endl;
     }
     else {
@@ -77,7 +77,7 @@ void handlingfillIn() {
     }
 }
 
-void taskUpload() {
+void Taskupload() {
     cout << "--- Please upload a task here ---" << endl << endl;
     cout << "1. Upload a new task" << endl;
     cout << "2. Exit" << endl;
@@ -95,11 +95,11 @@ void taskUpload() {
     }
     else {
         cout << "Invalid choice, please choose correctly" << endl;
-        taskUpload();
+        Taskupload();
     }
 }
 
 int main() {
-    taskUpload();
+    Taskupload();
     return 0;
 }
