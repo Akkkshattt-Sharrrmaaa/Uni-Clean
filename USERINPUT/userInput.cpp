@@ -47,7 +47,7 @@ void saveTasktofile(Task* task) {
         file << task->title << " " << task->description << " " << task->location << endl;
         file.close();
         cout << "Task uploaded successfully, you can exit now" << endl;
-        Taskupload();
+
     }
     else {
         cout << "Task upload failed, please try again" << endl;
