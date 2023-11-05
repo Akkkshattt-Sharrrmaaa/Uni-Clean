@@ -4,6 +4,10 @@
 #include "../USERINPUT/userInput.h"
 using namespace std;
 
+// to run the code , type in the compiler
+// g++ -o auth auth.cpp ../USERINPUT/userInput.cpp
+// can't run directly due to cmake not used and linker error
+
 class User{
     public:
         string username;
