@@ -4,8 +4,6 @@
 #include <vector>
 using namespace std;
 
-// void renameTempFile() {}
-
 
 class Staff {
     public:
@@ -29,6 +27,7 @@ int getStaffId() {
         cout << "Error -> Cannot open the file" << endl;
         return 0;
     }
+    
     string name;
     int id, jobs;
 
