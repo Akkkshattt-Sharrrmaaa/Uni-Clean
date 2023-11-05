@@ -16,6 +16,13 @@ class Staff {
         
 };
 
+class User {
+    public:
+        int id, staffId;
+        string name, compLoc, time, status;
+        
+}
+
 bool compareByJobs(const Staff& a, const Staff& b) {
             return a.jobs < b.jobs;
 };
@@ -69,25 +76,24 @@ void read() {
         return;
     }
 
-    int id, staffId;
-    string name, compLoc, time, status;
+    User user;
     string tempFilename = "temp.txt";
     ofstream tempFile(tempFilename);
 
     while (!userComplaint.eof()) {
         
-        userComplaint >> id >> name >> compLoc >> time >> status >> staffId;
+        userComplaint >> user.id >> user.name >> user.compLoc >> user.time >> user.status >> user.staffId;
 
-        if (status == "notAssigned") {
+        if (user.status == "notAssigned") {
 
-            staffId = getStaffId();
-            status = "pending";
-            assign(tempFile, id, name, compLoc, time, status, staffId);
+            user.staffId = getStaffId();
+            user.status = "pending";
+            assign(tempFile, user.id, user.name, user.compLoc, user.time, user.status, user.staffId);
             
         }
         else {
             // write the content to temp file as it is
-            assign(tempFile, id, name, compLoc, time, status, staffId);
+            assign(tempFile, user.id, user.name, user.compLoc, user.time, user.status, user.staffId);
         }
    
     }
