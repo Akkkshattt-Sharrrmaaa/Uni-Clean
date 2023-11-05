@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 #include<fstream>
+#include "../USERINPUT/userInput.h"
 using namespace std;
 
 class User{
@@ -64,6 +65,8 @@ void handlingSignIn(){
     if(authenticateUser(username , password)){
         cout<<"Sign In Successful "<<endl;
         cout<<" Welcome Back "<<username<<endl<<endl;
+
+        Taskupload();
     }else{
         cout<<endl<<"Incorrect Id or Password , Please try again "<<endl;
         return appStartup();
