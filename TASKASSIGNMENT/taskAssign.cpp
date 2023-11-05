@@ -15,6 +15,7 @@ class Staff {
         bool ongoing;
         
 };
+
 bool compareByJobs(const Staff& a, const Staff& b) {
             return a.jobs < b.jobs;
 };

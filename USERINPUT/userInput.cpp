@@ -71,6 +71,7 @@ void handlingfillIn() {
 
     if (authenticateTask(title, description, location)) {
         cout << "Task already exists." << endl;
+        Taskupload();
     }
     else {
         Task* task = new Task(title, description, location);
@@ -99,8 +100,3 @@ void Taskupload() {
         Taskupload();
     }
 }
-
-// int main() {
-//     Taskupload();
-//     return 0;
-// }
