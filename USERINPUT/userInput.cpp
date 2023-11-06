@@ -43,8 +43,12 @@ bool authenticateTask(string& title, string& description, string& location) {
 
 void saveTasktofile(Task* task, string sapid) {
     std::ofstream file("task.txt", std::ios::app);
+
+    string status = "Not Assigned";
+    string staffID = "0";
+
     if (file.is_open()) {
-        file << task->title << " " << task->description << " " << task->location <<" "<<sapid<< endl;
+        file<< sapid << task->title << "\t" << task->description << " \t" << task->location <<"\t"<< staffID<< "\t" << status << endl;
         file.close();
         cout << "Task uploaded successfully, you can exit now" << endl;
 
