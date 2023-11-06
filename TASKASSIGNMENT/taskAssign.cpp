@@ -18,10 +18,10 @@ class Staff {
 
 class User {
     public:
-        int id, staffId;
-        string name, compLoc, time, status;
         
-}
+        string id, staffId, topic, compLoc, description, status;
+        
+};
 
 bool compareByJobs(const Staff& a, const Staff& b) {
             return a.jobs < b.jobs;
@@ -63,9 +63,40 @@ int getStaffId() {
     return staffId;
 }
 
-void assign(ofstream& tempfile, int id, string name, string compLoc, string time, string status, int staffId) {
+User classAssign(vector<string> entry){
+    User user;
+
+    user.id = entry[0];
+    user.topic = entry[1];
+    user.compLoc = entry[2];
+    user.description = entry [3];
+    user.status = entry[4];
+    user.staffId = entry[6];
+
+    return user;
+
+}
+
+vector<string> traverse(string data) {
+    string temp;
+    vector<string> entry;
+    for (int i = 0; i < data.size(); i++) {
+        if (data[i] == '\t') {
+            entry.push_back(temp);
+            temp = "";
+        }
+        else {
+                temp = temp + data[i];
+        }
+    }
+    entry.push_back(temp);
+
+    return entry;
+}
+
+void assign(ofstream& tempfile, string id, string topic, string compLoc, string description, string status, string staffId) {
     // updates the status and staffAssigned column of the complain in userComplaint file
-    tempfile << id << name << compLoc << time << status << staffId << std::endl;
+    tempfile << id << topic << compLoc << description << status << staffId << std::endl;
 }
 
 void read() {
@@ -77,23 +108,24 @@ void read() {
     }
 
     User user;
-    string tempFilename = "temp.txt";
+    string tempFilename = "temp.txt", data;
     ofstream tempFile(tempFilename);
-
+    vector<string> entry;
     while (!userComplaint.eof()) {
-        
-        userComplaint >> user.id >> user.name >> user.compLoc >> user.time >> user.status >> user.staffId;
+        getline (userComplaint, data);
+        entry = traverse(data);
+        user = classAssign(entry);
 
-        if (user.status == "notAssigned") {
+        if (user.status == "not assigned") {
 
             user.staffId = getStaffId();
             user.status = "pending";
-            assign(tempFile, user.id, user.name, user.compLoc, user.time, user.status, user.staffId);
+            assign(tempFile, user.id, user.topic, user.compLoc, user.description, user.status, user.staffId);
             
         }
         else {
             // write the content to temp file as it is
-            assign(tempFile, user.id, user.name, user.compLoc, user.time, user.status, user.staffId);
+            assign(tempFile, user.id, user.topic, user.compLoc, user.description, user.status, user.staffId);
         }
    
     }
