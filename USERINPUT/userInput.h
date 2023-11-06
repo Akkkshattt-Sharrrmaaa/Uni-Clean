@@ -1,7 +1,8 @@
 #ifndef USERINPUT_H
 #define USERINPUT_H
+#include<string>
 
-void Taskupload();
+void Taskupload(std::string & sapID);
 
 
 #endif
