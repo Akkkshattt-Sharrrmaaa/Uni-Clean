@@ -44,7 +44,7 @@ bool authenticateTask(string& title, string& description, string& location) {
 void saveTasktofile(Task* task, string sapid) {
     std::ofstream file("task.txt", std::ios::app);
 
-    string status = "Pending";
+    string status = "Not Assigned";
     string staffID = "0";
 
     if (file.is_open()) {
