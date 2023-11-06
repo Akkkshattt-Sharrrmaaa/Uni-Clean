@@ -1,7 +1,7 @@
 #include<iostream>
 #include<string>
 #include<fstream>
-#include "../USERINPUT/userInput.h"
+// #include "../USERINPUT/userInput.h"
 using namespace std;
 
 // to run the code , type in the compiler
@@ -10,19 +10,18 @@ using namespace std;
 
 class User{
     public:
-        string sapID;
+        string username;
         string password;
 
-
-        User(string sapID, string password ){
-            this->sapID = sapID;
+        User(string username, string password){
+            this->username = username;
             this->password = password;
         }
 };
 
 void appStartup();
 
-bool authenticateUser(string& sapID , string& password ){
+bool authenticateUser(string& username , string& password){
 
     ifstream file("users.txt");
     if(file.is_open()){
@@ -30,10 +29,10 @@ bool authenticateUser(string& sapID , string& password ){
         while(getline(file, line)){
             size_t spacePos = line.find(' ');
             if(spacePos != string::npos){
-                string fileSapId = line.substr(0, spacePos);
+                string fileUsername = line.substr(0, spacePos);
                 string filePassword = line.substr(spacePos + 1);
 
-                if( sapID == fileSapId && filePassword == password){
+                if(fileUsername == username && filePassword == password){
                     return true;
                 }
             }
@@ -46,7 +45,7 @@ bool authenticateUser(string& sapID , string& password ){
 void saveUserToFile(User* user){
     std::ofstream file("users.txt", std::ios::app);
     if (file.is_open()) {
-        file << user->sapID << " " << user->password <<std::endl;
+        file << user->username << " " << user->password << std::endl;
         file.close();
         cout<<endl<<"Sign Up Successful , you can Sign In now"<<endl;
         return appStartup();
@@ -59,19 +58,17 @@ void saveUserToFile(User* user){
 
 void handlingSignIn(){
 
-    string sapID , password ;
+    string username , password;
 
     cout<<endl<<"---- Enter your username and password ----"<<endl;
     cout<<"username :" ;
-    cin>> sapID;
+    cin>> username;
     cout<<"password :";
     cin>>password;
 
-    if(authenticateUser(sapID , password)){
+    if(authenticateUser(username , password)){
         cout<<endl<<"Sign In Successful "<<endl<<endl;
-        cout<<"Welcome Back "<<sapID<<endl<<endl;
-
-        Taskupload(sapID);
+        cout<<" Welcome Back "<<username<<endl<<endl;
 
         // Taskupload();
     }else{
@@ -84,15 +81,15 @@ void handlingSignIn(){
 
 void handlingSignUp(){
 
-    string sapID , password ;
+    string username , password;
 
     cout<<"Enter the username and password you wish to set"<<endl;
-    cout<<"sapID : ";
-    cin>>sapID;
-    cout<<"password : ";
+    cout<<"username : ";
+    cin>>username;
+    cout<<"username : ";
     cin>>password;
 
-    User *user = new User( sapID , password );
+    User *user = new User(username , password);
 
     saveUserToFile(user);
 

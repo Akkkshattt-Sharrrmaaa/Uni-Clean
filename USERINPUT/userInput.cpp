@@ -13,7 +13,7 @@ public:
     Task(string title, string description, string location) : title(title), description(description), location(location) {}
 };
 
-void Taskupload();
+void Taskupload(string& sap);
 
 bool authenticateTask(string& title, string& description, string& location) {
     ifstream file("task.txt");
@@ -41,21 +41,21 @@ bool authenticateTask(string& title, string& description, string& location) {
     return false;
 }
 
-void saveTasktofile(Task* task) {
+void saveTasktofile(Task* task, string sapid) {
     std::ofstream file("task.txt", std::ios::app);
     if (file.is_open()) {
-        file << task->title << " " << task->description << " " << task->location << endl;
+        file << task->title << " " << task->description << " " << task->location <<" "<<sapid<< endl;
         file.close();
         cout << "Task uploaded successfully, you can exit now" << endl;
 
     }
     else {
         cout << "Task upload failed, please try again" << endl;
-        Taskupload();
+        Taskupload(sapid);
     }
 }
 
-void handlingfillIn() {
+void handlingfillIn(string sapid) {
     string title;
     string description;
     string location;
@@ -71,15 +71,16 @@ void handlingfillIn() {
 
     if (authenticateTask(title, description, location)) {
         cout << "Task already exists." << endl;
-        Taskupload();
+        Taskupload(sapid);
     }
     else {
         Task* task = new Task(title, description, location);
-        saveTasktofile(task);
+        saveTasktofile(task, sapid);
     }
 }
 
-void Taskupload() {
+void Taskupload(string& sapID) {
+    string sapid = sapID;
     cout << "--- Please upload a task here ---" << endl << endl;
     cout << "1. Upload a new task" << endl;
     cout << "2. Exit" << endl;
@@ -90,13 +91,13 @@ void Taskupload() {
     cin >> choice;
 
     if (choice == 1) {
-        handlingfillIn();
+        handlingfillIn(sapid);
     }
     else if (choice == 2) {
         return;
     }
     else {
         cout << "Invalid choice, please choose correctly" << endl;
-        Taskupload();
+        Taskupload(sapid);
     }
 }
