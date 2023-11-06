@@ -89,7 +89,6 @@ vector<string> traverse(string data) {
         }
     }
     entry.push_back(temp);
-
     return entry;
 }
 
@@ -116,11 +115,12 @@ void read() {
         getline (userComplaint, data);
         entry = traverse(data);
         user = userAssign(entry);
-        
+
         if (user.status == "not assigned") {
 
             user.staffId = getStaffId();
             user.status = "pending";
+            
             assign(tempFile, user.id, user.topic, user.compLoc, user.description, user.status, user.staffId);
             
         }
