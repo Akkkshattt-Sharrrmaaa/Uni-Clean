@@ -63,7 +63,7 @@ int getStaffId() {
     return staffId;
 }
 
-User classAssign(vector<string> entry){
+User userAssign(vector<string> entry){
     User user;
 
     user.id = entry[0];
@@ -96,7 +96,9 @@ vector<string> traverse(string data) {
 
 void assign(ofstream& tempfile, string id, string topic, string compLoc, string description, string status, string staffId) {
     // updates the status and staffAssigned column of the complain in userComplaint file
-    tempfile << id << topic << compLoc << description << status << staffId << std::endl;
+    string temp;
+    temp = id + '\t' + topic + '\t' + compLoc + '\t' + description + '\t' + status +  '\t' + staffId;
+    tempfile << temp << std::endl;
 }
 
 void read() {
@@ -114,8 +116,8 @@ void read() {
     while (!userComplaint.eof()) {
         getline (userComplaint, data);
         entry = traverse(data);
-        user = classAssign(entry);
-
+        user = userAssign(entry);
+        
         if (user.status == "not assigned") {
 
             user.staffId = getStaffId();
