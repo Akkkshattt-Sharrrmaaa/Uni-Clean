@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include "userInput.h"
+#include "../TASKASSIGNMENT/taskAssign.h"
 using namespace std;
 
 class Task {
@@ -48,7 +49,7 @@ void saveTasktofile(Task* task, string sapid) {
     string staffID = "0";
 
     if (file.is_open()) {
-        file<< sapid << task->title << "\t" << task->description << " \t" << task->location <<"\t"<< staffID<< "\t" << status << endl;
+        file<< sapid << "\t" << task->title << "\t" << task->location << " \t" << task->description <<"\t"<< staffID<< "\t" << status << endl;
         file.close();
         cout << "Task uploaded successfully, you can exit now" << endl;
 
@@ -96,12 +97,16 @@ void Taskupload(string& sapID) {
 
     if (choice == 1) {
         handlingfillIn(sapid);
+        TaskAssign();
     }
     else if (choice == 2) {
+        TaskAssign();
         return;
+        
     }
     else {
         cout << "Invalid choice, please choose correctly" << endl;
         Taskupload(sapid);
     }
+
 }

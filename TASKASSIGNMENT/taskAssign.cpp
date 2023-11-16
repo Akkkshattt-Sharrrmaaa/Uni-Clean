@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "taskAssign.h"
 using namespace std;
 
 
@@ -70,7 +71,7 @@ User userAssign(vector<string> entry){
     user.compLoc = entry[2];
     user.description = entry [3];
     user.status = entry[4];
-    user.staffId = entry[6];
+    user.staffId = entry[5];
 
     return user;
 
@@ -100,7 +101,7 @@ void assign(ofstream& tempfile, string id, string topic, string compLoc, string 
 }
 
 void read() {
-    ifstream userComplaint("userComplaint.txt");
+    ifstream userComplaint("task.txt");
 
     if (!userComplaint.is_open()) {
         cout << "Error -> Cannot open the file" << endl;
@@ -113,9 +114,11 @@ void read() {
     vector<string> entry;
     while (!userComplaint.eof()) {
         getline (userComplaint, data);
+        if (data == "") {
+            continue;
+        }
         entry = traverse(data);
         user = userAssign(entry);
-
         if (user.status == "not assigned") {
 
             user.staffId = getStaffId();
@@ -136,17 +139,16 @@ void read() {
 
 }
 
-int main() {
+void TaskAssign() {
 
     // reading from userComplaint file
     read();
-    std::remove("userComplaint.txt");
-    std::rename("temp.txt", "userComplaint.txt");
+    std::remove("task.txt");
+    std::rename("temp.txt", "task.txt");
 
     // delete the userComplaint file
     // change the name of temp file to user complaint file;
 
-    return 0;
 }
 
 // take the not assigned requests from userComplaint file
