@@ -1,7 +1,12 @@
-<<<<<<< HEAD
-500096000	task	9000 	test task	0	Not Assigned
-500096000	task2	9001 	testing task2	0	Not Assigned
-=======
-pinku ka task pinku ko 9th block ke samne kooda dikha 9th block ke bahar 5000123
-5000969239th block	corridor is not clean 	1st floor	0	Not Assigned
->>>>>>> 47402a9948b16174e96052977139259e7457a6d3
+500096000	ooooooooo	oooooo 	ooooooooooooooooooooooo	1	pending
+500096000	pppp	ppp 	ppppppp	1	pending
+500096000	ioqwdm	fqwfqfw 	wqf,ofq	1	pending
+500096000	ncierncve	noivenrv 	ejiniv	1	pending
+500096000	iecwo	ncwoi 	ncwie	1	pending
+500096000	niweudo	woqnien 	nwoice	1	pending
+500096000	iowen	woioiw 	oiwen	1	pending
+500096000	iouheiow	noiwbncow 	woeicbnw	1	pending
+500096000	uygwdihid	iunoiqfwin 	nijqwniodq	1	pending
+500096000	huieojp	noiwce 	neiwcopw	1	pending
+500096000	trxycuiho	vuyvgiu 	vutyuigbio	1	pending
+500096000	oiqc	iuqcwno 	oiqcnqo	1	pending
