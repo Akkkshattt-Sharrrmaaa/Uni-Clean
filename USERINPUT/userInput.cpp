@@ -55,7 +55,7 @@ void saveTasktofile(Task* task, string sapid) {
 
     }
     else {
-        cout << "Task upload failed, please try again" << endl;
+        cout<<endl<< "Task upload failed, please try again" << endl;
         Taskupload(sapid);
     }
 }

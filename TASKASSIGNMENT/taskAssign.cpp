@@ -27,7 +27,7 @@ bool compareByJobs(const Staff& a, const Staff& b) {
 };
 
 
-int getStaffId() {
+string getStaffId() {
     
     ifstream staffDetails("staffDetails.txt");
     
@@ -59,7 +59,8 @@ int getStaffId() {
     
     sort(staffs.begin(), staffs.end(), compareByJobs);
 
-    int staffId = staffs[0].id;
+    int staffIdint = staffs[0].id;
+    string staffId = to_string(staffIdint);
     return staffId;
 }
 
