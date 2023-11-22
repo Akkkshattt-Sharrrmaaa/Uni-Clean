@@ -22,6 +22,25 @@ class User{
 
 void appStartup();
 
+bool duplicateSignUp(string& sapID, string& password){
+   ifstream file("users.txt");
+    if(file.is_open()){
+        string line;
+        while(getline(file, line)){
+            size_t spacePos = line.find(' ');
+            if(spacePos != string::npos){
+                string fileSapId = line.substr(0, spacePos);
+                string filePassword = line.substr(spacePos + 1);
+
+                if( sapID == fileSapId){
+                    return true;
+                }
+            }
+        }file.close();
+    }
+    return false; 
+}
+
 bool authenticateUser(string& sapID , string& password ){
 
     ifstream file("users.txt");
@@ -45,6 +64,12 @@ bool authenticateUser(string& sapID , string& password ){
 
 void saveUserToFile(User* user){
     std::ofstream file("users.txt", std::ios::app);
+
+    if(duplicateSignUp(user->sapID , user->password)){
+        cout<<endl<<"User already exists"<<endl;
+        appStartup();
+    }
+    else{
     if (file.is_open()) {
         file << user->sapID << " " << user->password <<std::endl;
         file.close();
@@ -53,6 +78,7 @@ void saveUserToFile(User* user){
     }else{
         cout<<endl<<"User creation failed , please try again"<<endl;
         return appStartup();
+    }
     }
 
 }
