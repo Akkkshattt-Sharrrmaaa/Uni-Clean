@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <sstream>
 #include "taskAssign.h"
 using namespace std;
 
@@ -26,26 +27,99 @@ bool compareByJobs(const Staff& a, const Staff& b) {
             return a.jobs < b.jobs;
 };
 
+void taskCompleted(string staffIdstr) {
+    int staffId = stoi(staffIdstr);
+    ifstream inFile("staffDetails.txt");
+    vector<string> lines;
+    string line;
+
+    while (getline(inFile, line)) {
+        lines.push_back(line);
+    }
+
+    inFile.close();
+
+    // Find the line with the specified staff ID
+    for (size_t i = 0; i < lines.size(); ++i) {
+        istringstream iss(lines[i]);
+        int currentStaffId;
+        string name;
+        int jobsCompleted;
+        bool ongoing;
+
+        if (iss >> currentStaffId >> name >> jobsCompleted>> ongoing) {
+            if (currentStaffId == staffId) {
+
+                lines[i] = to_string(currentStaffId) + "\t" + name + "\t" + to_string(jobsCompleted + 1)+ "\t0";
+                break; 
+            }
+        }
+    }
+
+    ofstream outFile("staffDetails.txt");
+    for (const auto& updatedLine : lines) {
+        outFile << updatedLine << "\n";
+    }
+}
+
+void updateJobsCompleted(string staffIdstr) {
+    int staffId = stoi(staffIdstr);
+    ifstream inFile("staffDetails.txt");
+    vector<string> lines;
+    string line;
+
+    while (getline(inFile, line)) {
+        lines.push_back(line);
+    }
+
+    inFile.close();
+
+    // Find the line with the specified staff ID
+    for (size_t i = 0; i < lines.size(); ++i) {
+        istringstream iss(lines[i]);
+        int currentStaffId;
+        string name;
+        int jobsCompleted;
+        bool ongoing;
+
+        if (iss >> currentStaffId >> name >> jobsCompleted>> ongoing) {
+            if (currentStaffId == staffId) {
+
+                lines[i] = to_string(currentStaffId) + "\t" + name + "\t" + to_string(jobsCompleted)+ "\t1";
+                break; 
+            }
+        }
+    }
+
+    ofstream outFile("staffDetails.txt");
+    for (const auto& updatedLine : lines) {
+        outFile << updatedLine << "\n";
+    }
+}
 
 string getStaffId() {
     
     ifstream staffDetails("staffDetails.txt");
     
     if (!staffDetails.is_open()) {
-        cout << "Error -> Cannot open the file" << endl;
+        cout << "Error -> Cannot open the file" << endl<<endl;
         return 0;
     }
     
     string name;
     int id, jobs;
+    int ongoing;
 
     vector<int> staffIds;
     vector<int> staffJobs;
 
     while (!staffDetails.eof()) {
-        staffDetails >> id >> name >> jobs;
-        staffIds.push_back(id);
-        staffJobs.push_back(jobs);
+        staffDetails >> id >> name >> jobs >> ongoing;
+        if (ongoing == 0) {
+            staffIds.push_back(id);
+            staffJobs.push_back(jobs);
+        }
+        
     }
     
     vector<Staff> staffs;
@@ -61,8 +135,12 @@ string getStaffId() {
 
     int staffIdint = staffs[0].id;
     string staffId = to_string(staffIdint);
+    cout<<"Staff chosen: "<<staffId<<endl<<endl;
+    updateJobsCompleted(staffId);
     return staffId;
 }
+
+
 
 User userAssign(vector<string> entry){
     User user;
@@ -71,8 +149,8 @@ User userAssign(vector<string> entry){
     user.topic = entry[1];
     user.compLoc = entry[2];
     user.description = entry [3];
-    user.status = entry[4];
-    user.staffId = entry[5];
+    user.status = entry[5];
+    user.staffId = entry[4];
 
     return user;
 
@@ -97,15 +175,15 @@ vector<string> traverse(string data) {
 void assign(ofstream& tempfile, string id, string topic, string compLoc, string description, string status, string staffId) {
     // updates the status and staffAssigned column of the complain in userComplaint file
     string temp;
-    temp = id + '\t' + topic + '\t' + compLoc + '\t' + description + '\t' + status +  '\t' + staffId;
+    temp = id + '\t' + topic + '\t' + compLoc + '\t' + description + '\t' + staffId +  '\t' + status;
     tempfile << temp << std::endl;
 }
 
 void read() {
     ifstream userComplaint("task.txt");
-
+    
     if (!userComplaint.is_open()) {
-        cout << "Error -> Cannot open the file" << endl;
+        cout << "Error -> Cannot open the file" << endl<<endl;
         return;
     }
 
@@ -120,8 +198,8 @@ void read() {
         }
         entry = traverse(data);
         user = userAssign(entry);
-        if (user.status == "not assigned") {
-
+        if (user.status == "Not Assigned") {
+            cout<<endl<<"Assigning staff to task"<<endl<<endl;
             user.staffId = getStaffId();
             user.status = "pending";
             
