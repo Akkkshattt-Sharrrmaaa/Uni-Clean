@@ -13,7 +13,9 @@ public:
 
     Task(string title, string description, string location) : title(title), description(description), location(location) {}
 };
-
+void printcurrent(std::string staffId);
+void printcompleted(std::string staffId);
+void to_complete(std::string staffId);
 void Taskupload(string& sap);
 
 bool authenticateTask(string& title, string& description, string& location) {
@@ -109,4 +111,35 @@ void Taskupload(string& sapID) {
         Taskupload(sapid);
     }
 
+}
+
+
+void staffOptions(string& ID){
+    cout << "Welcome to the staff portal, " << ID << endl;
+    cout << "1. View current task" << endl;
+    cout << "2. View all completed tasks" << endl;
+    cout << "3. Mark current task completed" << endl;
+    cout << "4. Exit" << endl;
+    cout << "Enter your choice (1/2/3/4): ";
+    int choice;
+    cin >> choice;
+    cin.ignore();
+
+    switch (choice) {
+        case 1:
+            printcurrent(ID);
+            break;
+        case 2:
+            printcompleted(ID);
+            break;
+        case 3:
+            to_complete(ID);
+            break;
+        case 4:
+            return;
+        default:
+            cout << "Invalid choice" << endl;
+            staffOptions(ID);
+            break;
+    }
 }

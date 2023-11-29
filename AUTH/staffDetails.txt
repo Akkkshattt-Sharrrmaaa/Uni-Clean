@@ -1,3 +1,4 @@
-1001	Ramesh	4	1
-1002	Bablu	6	1
-1003	Suresh	3	1
+1001	Ramesh	5	0
+1002	Bablu	7	0
+1003	Suresh	4	0
+0	Kusu	5	0

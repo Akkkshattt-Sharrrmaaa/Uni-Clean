@@ -41,10 +41,27 @@ bool duplicateSignUp(string& sapID, string& password){
     return false; 
 }
 
-bool authenticateUser(string& sapID , string& password ){
+bool authenticateUser(string& sapID , string& password, int userType){
+    cout<<"inside authenticate user"<<endl;
+    if(userType==1){
+        ifstream file("staff.txt");
+        if(file.is_open()){
+        string line;
+        while(getline(file, line)){
+            size_t spacePos = line.find(' ');
+            if(spacePos != string::npos){
+                string fileSapId = line.substr(0, spacePos);
+                string filePassword = line.substr(spacePos + 1);
 
-    ifstream file("users.txt");
-    if(file.is_open()){
+                if( sapID == fileSapId && filePassword == password){
+                    return true;
+                }
+            }
+        }file.close();
+        }
+    }else if(userType==2){
+        ifstream file("users.txt");
+        if(file.is_open()){
         string line;
         while(getline(file, line)){
             size_t spacePos = line.find(' ');
@@ -58,6 +75,11 @@ bool authenticateUser(string& sapID , string& password ){
             }
         }file.close();
     }
+    }
+    else{
+        cout<<"Invalid user type"<<endl;
+    }
+    
     return false;
 }
 
@@ -83,7 +105,8 @@ void saveUserToFile(User* user){
 
 }
 
-void handlingSignIn(){
+
+void handlingSignIn(int userType){
 
     string sapID , password ;
 
@@ -92,12 +115,21 @@ void handlingSignIn(){
     cin>> sapID;
     cout<<"password :";
     cin>>password;
+    cout<<"inside handling sign in"<<endl;
+    if(authenticateUser(sapID , password, userType)){
+        cout<<"user type is : "<<userType<<endl;
 
-    if(authenticateUser(sapID , password)){
         cout<<endl<<"Sign In Successful "<<endl<<endl;
         cout<<"Welcome Back "<<sapID<<endl<<endl;
+        if (userType==1){
+            cout<<"Inside user type 1"<<endl;
+            staffOptions(sapID);
+        }
+        else if (userType==2){
+            cout<<"insider user type 2"<<endl;
+            Taskupload(sapID);
 
-        Taskupload(sapID);
+        }
 
         // Taskupload();
     }else{
@@ -137,8 +169,23 @@ void appStartup(){
     cin>> choice;
 
     if(choice == 1){
-
-        handlingSignIn();
+        cout<<endl<<"1. Staff"<<endl;
+        cout<<"2. Student"<<endl;
+        int subchoice;
+        cin>> subchoice;
+        int userType;
+        if (subchoice == 1){
+            userType = 1;
+            handlingSignIn(userType);
+        }
+        else if (subchoice == 2){
+            userType = 2;
+            handlingSignIn(userType);
+        }
+        else{
+            cout<<endl<<endl<<"----Invalid choice , please choose again ----"<<endl;
+            return appStartup();
+        }
         
     }else if(choice == 2){
 

@@ -49,7 +49,6 @@ void taskCompleted(string staffIdstr) {
 
         if (iss >> currentStaffId >> name >> jobsCompleted>> ongoing) {
             if (currentStaffId == staffId) {
-
                 lines[i] = to_string(currentStaffId) + "\t" + name + "\t" + to_string(jobsCompleted + 1)+ "\t0";
                 break; 
             }
@@ -201,7 +200,13 @@ void read() {
         if (user.status == "Not Assigned") {
             cout<<endl<<"Assigning staff to task"<<endl<<endl;
             user.staffId = getStaffId();
-            user.status = "pending";
+            if (user.staffId == "0") {
+                user.status = "Not Assigned";
+            }
+            else {
+                user.status = "pending";
+            }
+            
             
             assign(tempFile, user.id, user.topic, user.compLoc, user.description, user.status, user.staffId);
             
@@ -218,6 +223,95 @@ void read() {
 
 }
 
+
+
+void printcompleted(string staffIDstr){
+    int staffId = stoi(staffIDstr);
+    vector<string> ans;
+    vector<string> tokens;
+    ifstream inputFile("task.txt");
+    string data;
+    while(getline(inputFile, data)){
+        istringstream iss(data);
+        do{
+            string word;
+            iss>>word;
+            tokens.push_back(word);
+        }while(iss);
+
+        if(staffId == stoi(tokens[4]) && tokens[5]=="Completed"){
+            ans.push_back(data);
+        }
+        tokens.clear();
+    }
+    for(int i=0; i<ans.size(); i++){
+        cout<<ans[i]<<endl;
+    }
+}
+void printcurrent(string staffId){
+    vector<string> ans;
+    vector<string> tokens;
+    ifstream inputFile("task.txt");
+    string data;
+    while(getline(inputFile, data)){
+        istringstream iss(data);
+        do{
+            string word;
+            iss>>word;
+            tokens.push_back(word);
+        }while(iss);
+        if(staffId == tokens[4] && tokens[5]=="pending"){
+            ans.push_back(data);
+        }
+        tokens.clear();
+    }
+    for(int i=0; i<ans.size(); i++){
+        cout<<ans[i]<<endl;
+    }
+}
+
+void update_task(string staffId) {
+  ifstream userComplaint("task.txt");
+  if (!userComplaint.is_open()) {
+    cout << "Error -> Cannot open the file" << endl << endl;
+    return;
+  }
+
+  User user;
+  string tempFilename = "temp.txt", data;
+  ofstream tempFile(tempFilename);
+  vector<string> entry;
+  while (!userComplaint.eof()) {
+    getline(userComplaint, data);
+    if (data == "") {
+      continue;
+    }
+    entry = traverse(data);
+    user = userAssign(entry);
+    if (user.status == "pending" && user.staffId == staffId) {
+      cout << endl << "Task Completed" << endl << endl;
+      user.status = "Completed";
+
+      assign(tempFile, user.id, user.topic, user.compLoc, user.description,
+             user.status, user.staffId);
+
+    } else {
+      // write the content to temp file as it is
+      assign(tempFile, user.id, user.topic, user.compLoc, user.description,
+             user.status, user.staffId);
+    }
+  }
+
+  tempFile.close();
+  userComplaint.close();
+}
+
+void to_complete(string staffId) {
+  update_task(staffId);
+  std::remove("task.txt");
+  std::rename("temp.txt", "task.txt");
+  taskCompleted(staffId);
+}
 void TaskAssign() {
 
     // reading from userComplaint file

@@ -3,6 +3,7 @@
 #include<string>
 
 void Taskupload(std::string & sapID);
+void staffOptions(std::string & ID);
 
 
 #endif

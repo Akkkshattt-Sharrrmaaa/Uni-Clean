@@ -1,2 +1,4 @@
-0	jiokp	wmcoeimn 	io2dn	1001	pending
-0	iond	mowec 	mocwe	1002	pending
+0	jiokp	wmcoeimn 	io2dn	1001	Completed
+0	iond	mowec 	mocwe	1002	Completed
+0	eionrvo	e3nfoiwfn 	ieurn	0	Completed
+0	clean	room 	my	1003	Completed
